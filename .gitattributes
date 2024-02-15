@@ -1,0 +1,4 @@
+/.git*            export-ignore
+/.php-cs-fixer.*  export-ignore
+/doc              export-ignore
+/phpunit.xml.dist export-ignore
