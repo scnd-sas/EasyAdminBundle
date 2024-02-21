@@ -23,6 +23,9 @@
             <argument>%easyadmin.config%</argument>
         </service>
 
+        <service id="EasyCorp\Bundle\EasyAdminBundle\Configuration\ConfigManager" alias="easyadmin.config.manager" />
+        <service id="EasyCorp\Bundle\EasyAdminBundle\Search\QueryBuilder" alias="easyadmin.query_builder" />
+
         <service id="easyadmin.query_builder" class="EasyCorp\Bundle\EasyAdminBundle\Search\QueryBuilder" public="true">
             <argument type="service" id="doctrine" />
         </service>

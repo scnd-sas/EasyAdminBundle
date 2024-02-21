@@ -5,33 +5,80 @@ declare(strict_types=1);
 namespace EasyCorp\Bundle\EasyAdminBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
-use function is_object;
+use EasyCorp\Bundle\EasyAdminBundle\Configuration\ConfigManager;
+use EasyCorp\Bundle\EasyAdminBundle\Search\QueryBuilder;
 use LogicException;
+use Psr\Container\ContainerInterface;
 use SplFileInfo;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\WebLink\HttpHeaderSerializer;
+use Symfony\Contracts\Service\Attribute\Required;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Throwable;
+use Twig\Environment;
+use function is_object;
 
-class AbstractController implements ContainerAwareInterface
+class AbstractController implements ServiceSubscriberInterface
 {
-    use ContainerAwareTrait;
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    #[Required]
+    public function setContainer(ContainerInterface $container): ?ContainerInterface
+    {
+        $previous = $this->container ?? null;
+        $this->container = $container;
+
+        return $previous;
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return [
+            'router' => '?'.RouterInterface::class,
+            'request_stack' => '?'.RequestStack::class,
+            'http_kernel' => '?'.HttpKernelInterface::class,
+            'serializer' => '?'.SerializerInterface::class,
+            'security.authorization_checker' => '?'.AuthorizationCheckerInterface::class,
+            'twig' => '?'.Environment::class,
+            'form.factory' => '?'.FormFactoryInterface::class,
+            'security.token_storage' => '?'.TokenStorageInterface::class,
+            'security.csrf.token_manager' => '?'.CsrfTokenManagerInterface::class,
+            'parameter_bag' => '?'.ContainerBagInterface::class,
+            'web_link.http_header_serializer' => '?'.HttpHeaderSerializer::class,
+            'event_dispatcher' => '?'.EventDispatcherInterface::class,
+            'easyadmin.config.manager' => '?'.ConfigManager::class,
+            'easyadmin.query_builder' => '?'.QueryBuilder::class,
+            'doctrine' => '?'.ManagerRegistry::class,
+        ];
+    }
 
     /**
      * Gets a container parameter by its name.
