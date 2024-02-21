@@ -12,6 +12,7 @@
 namespace EasyCorp\Bundle\EasyAdminBundle\Configuration;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig\Environment as Twig;
 
 /**
  * Processes the custom CSS styles applied to the backend design based on the
@@ -21,10 +22,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class DesignConfigPass implements ConfigPassInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+
+    private Twig $twig;
     /**
      * @var bool
      */
@@ -39,9 +38,9 @@ class DesignConfigPass implements ConfigPassInterface
      * @var bool
      * @var string
      */
-    public function __construct(ContainerInterface $container, $kernelDebug, $locale)
+    public function __construct(Twig $twig, $kernelDebug, $locale)
     {
-        $this->container = $container;
+        $this->twig = $twig;
         $this->kernelDebug = $kernelDebug;
         $this->locale = $locale;
     }
@@ -70,7 +69,7 @@ class DesignConfigPass implements ConfigPassInterface
 
     private function processCustomCss(array $backendConfig): array
     {
-        $customCssContent = $this->container->get('twig')->render('@EasyAdmin/css/easyadmin.css.twig', [
+        $customCssContent = $this->twig->render('@EasyAdmin/css/easyadmin.css.twig', [
             'brand_color' => $backendConfig['design']['brand_color'],
             'color_scheme' => $backendConfig['design']['color_scheme'],
             'kernel_debug' => $this->kernelDebug,

@@ -23,6 +23,9 @@
             <argument>%easyadmin.config%</argument>
         </service>
 
+        <service id="EasyCorp\Bundle\EasyAdminBundle\Configuration\ConfigManager" alias="easyadmin.config.manager" />
+        <service id="EasyCorp\Bundle\EasyAdminBundle\Search\QueryBuilder" alias="easyadmin.query_builder" />
+
         <service id="easyadmin.query_builder" class="EasyCorp\Bundle\EasyAdminBundle\Search\QueryBuilder" public="true">
             <argument type="service" id="doctrine" />
         </service>
@@ -89,7 +92,7 @@
         </service>
 
         <service id="easyadmin.configuration.design_config_pass" class="EasyCorp\Bundle\EasyAdminBundle\Configuration\DesignConfigPass" public="false">
-            <argument id="service_container" type="service" />
+            <argument id="twig" type="service" />
             <argument>%kernel.debug%</argument>
             <argument>%kernel.default_locale%</argument>
             <tag name="easyadmin.config_pass" priority="80" />
