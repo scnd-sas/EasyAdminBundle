@@ -83,6 +83,7 @@ class AbstractController implements ServiceSubscriberInterface
             'easyadmin.paginator' => '?'.Paginator::class,
             'easy_admin.property_accessor' => '?'.PropertyAccessor::class,
             'doctrine' => '?'.ManagerRegistry::class,
+            'request_stack' => '?'.RequestStack::class,
         ];
     }
 
@@ -193,9 +194,9 @@ class AbstractController implements ServiceSubscriberInterface
     protected function addFlash(string $type, $message): void
     {
         try {
-            $this->container->get('session')->getFlashBag()->add($type, $message);
+            $this->container->get('request_stack')->getSession()->getFlashBag()->add($type, $message);
         } catch (SessionNotFoundException $e) {
-            throw new LogicException('You can not use the addFlash method if sessions are disabled. Enable them in "config/packages/framework.yaml".', 0, $e);
+            throw new \LogicException('You cannot use the addFlash method if sessions are disabled. Enable them in "config/packages/framework.yaml".', 0, $e);
         }
     }
 
