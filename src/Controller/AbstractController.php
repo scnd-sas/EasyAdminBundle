@@ -6,6 +6,8 @@ namespace EasyCorp\Bundle\EasyAdminBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
 use EasyCorp\Bundle\EasyAdminBundle\Configuration\ConfigManager;
+use EasyCorp\Bundle\EasyAdminBundle\Search\Autocomplete;
+use EasyCorp\Bundle\EasyAdminBundle\Search\Paginator;
 use EasyCorp\Bundle\EasyAdminBundle\Search\QueryBuilder;
 use LogicException;
 use Psr\Container\ContainerInterface;
@@ -27,6 +29,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -74,8 +77,11 @@ class AbstractController implements ServiceSubscriberInterface
             'parameter_bag' => '?'.ContainerBagInterface::class,
             'web_link.http_header_serializer' => '?'.HttpHeaderSerializer::class,
             'event_dispatcher' => '?'.EventDispatcherInterface::class,
+            'easyadmin.autocomplete' => '?'.Autocomplete::class,
             'easyadmin.config.manager' => '?'.ConfigManager::class,
             'easyadmin.query_builder' => '?'.QueryBuilder::class,
+            'easyadmin.paginator' => '?'.Paginator::class,
+            'easy_admin.property_accessor' => '?'.PropertyAccessor::class,
             'doctrine' => '?'.ManagerRegistry::class,
         ];
     }
