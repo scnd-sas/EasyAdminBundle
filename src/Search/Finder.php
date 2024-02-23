@@ -25,15 +25,9 @@ class Finder
      */
     private $queryBuilder;
 
-    /**
-     * @var Paginator
-     */
-    private $paginator;
-
-    public function __construct(QueryBuilder $queryBuilder, Paginator $paginator)
+    public function __construct(QueryBuilder $queryBuilder)
     {
         $this->queryBuilder = $queryBuilder;
-        $this->paginator = $paginator;
     }
 
     /**
@@ -49,6 +43,6 @@ class Finder
     {
         $queryBuilder = $this->queryBuilder->createSearchQueryBuilder($entityConfig, $searchQuery, $sortField, $sortDirection);
 
-        return $this->paginator->createOrmPaginator($queryBuilder, $page, $maxResults);
+        return Paginator::createOrmPaginator($queryBuilder, $page, $maxResults);
     }
 }

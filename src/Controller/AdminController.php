@@ -22,10 +22,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Exception\NoEntitiesConfiguredException;
 use EasyCorp\Bundle\EasyAdminBundle\Exception\UndefinedEntityException;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Util\LegacyFormHelper;
 use EasyCorp\Bundle\EasyAdminBundle\Pagination\PaginatorAdapter;
-use EasyCorp\Bundle\EasyAdminBundle\Search\Paginator;
+use EasyCorp\Bundle\EasyAdminBundle\Search\Paginator as EasyAdminPaginator;
 use Exception;
 use Pagerfanta\Pagerfanta;
 use RuntimeException;
+use Second\Shared\Domain\Collection\Paginator;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
@@ -609,7 +610,7 @@ class AdminController extends AbstractController
             'sort_direction' => $sortDirection,
         ]);
 
-        return $this->get('easyadmin.paginator')->createOrmPaginator($queryBuilder, $page, $maxPerPage);
+        return EasyAdminPaginator::createOrmPaginator($queryBuilder, $page, $maxPerPage);
     }
 
     /**
@@ -662,7 +663,7 @@ class AdminController extends AbstractController
             'searchable_fields' => $searchableFields,
         ]);
 
-        return $this->get('easyadmin.paginator')->createOrmPaginator($queryBuilder, $page, $maxPerPage);
+        return EasyAdminPaginator::createOrmPaginator($queryBuilder, $page, $maxPerPage);
     }
 
     /**

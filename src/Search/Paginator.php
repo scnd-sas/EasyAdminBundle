@@ -33,7 +33,7 @@ class Paginator
      *
      * @return Pagerfanta
      */
-    public function createOrmPaginator($queryBuilder, $page = 1, $maxPerPage = self::MAX_ITEMS)
+    public static function createOrmPaginator($queryBuilder, $page = 1, $maxPerPage = self::MAX_ITEMS)
     {
         $query = $queryBuilder->getQuery();
         if (0 === \count($queryBuilder->getDQLPart('join'))) {

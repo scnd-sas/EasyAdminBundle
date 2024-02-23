@@ -32,16 +32,12 @@
 
         <service id="easyadmin.finder" class="EasyCorp\Bundle\EasyAdminBundle\Search\Finder" public="false">
             <argument type="service" id="easyadmin.query_builder" />
-            <argument type="service" id="easyadmin.paginator" />
         </service>
 
         <service id="easyadmin.autocomplete" class="EasyCorp\Bundle\EasyAdminBundle\Search\Autocomplete" public="true">
             <argument type="service" id="easyadmin.config.manager" />
             <argument type="service" id="easyadmin.finder" />
             <argument type="service" id="property_accessor" />
-        </service>
-
-        <service id="easyadmin.paginator" class="EasyCorp\Bundle\EasyAdminBundle\Search\Paginator" public="true">
         </service>
 
         <service id="easyadmin.router" class="EasyCorp\Bundle\EasyAdminBundle\Router\EasyAdminRouter" public="true">
