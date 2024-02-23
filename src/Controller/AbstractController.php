@@ -7,7 +7,6 @@ namespace EasyCorp\Bundle\EasyAdminBundle\Controller;
 use Doctrine\Persistence\ManagerRegistry;
 use EasyCorp\Bundle\EasyAdminBundle\Configuration\ConfigManager;
 use EasyCorp\Bundle\EasyAdminBundle\Search\Autocomplete;
-use EasyCorp\Bundle\EasyAdminBundle\Search\Paginator;
 use EasyCorp\Bundle\EasyAdminBundle\Search\QueryBuilder;
 use LogicException;
 use Psr\Container\ContainerInterface;
@@ -80,7 +79,6 @@ class AbstractController implements ServiceSubscriberInterface
             'easyadmin.autocomplete' => '?'.Autocomplete::class,
             'easyadmin.config.manager' => '?'.ConfigManager::class,
             'easyadmin.query_builder' => '?'.QueryBuilder::class,
-            'easyadmin.paginator' => '?'.Paginator::class,
             'easy_admin.property_accessor' => '?'.PropertyAccessor::class,
             'doctrine' => '?'.ManagerRegistry::class,
             'request_stack' => '?'.RequestStack::class,
