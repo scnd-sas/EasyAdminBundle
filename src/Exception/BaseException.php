@@ -61,10 +61,7 @@ class BaseException extends HttpException
         return $this->context->getParameters();
     }
 
-    /**
-     * @return int
-     */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->context->getStatusCode();
     }
