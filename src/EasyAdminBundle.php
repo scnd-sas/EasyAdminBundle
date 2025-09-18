@@ -24,7 +24,7 @@ class EasyAdminBundle extends Bundle
 {
     public const VERSION = '1.17.25';
 
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new EasyAdminFormTypePass(), PassConfig::TYPE_BEFORE_REMOVING);
         $container->addCompilerPass(new EasyAdminConfigPass());

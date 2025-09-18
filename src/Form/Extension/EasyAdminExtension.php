@@ -44,7 +44,7 @@ class EasyAdminExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         if (null !== $this->requestStack) {
             $this->request = $this->requestStack->getCurrentRequest();

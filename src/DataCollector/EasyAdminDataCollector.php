@@ -42,7 +42,7 @@ class EasyAdminDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function reset()
+    public function reset(): void
     {
         $this->data = [
             'num_entities' => 0,
@@ -55,7 +55,7 @@ class EasyAdminDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, Throwable $exception = null)
+    public function collect(Request $request, Response $response, Throwable $exception = null): void
     {
         // 'admin' is the deprecated route name that will be removed in version 2.0.
         if (!in_array($request->attributes->get('_route'), ['easyadmin', 'admin'])) {

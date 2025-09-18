@@ -401,61 +401,57 @@
     {{ block('form_row') }}
 {% endblock %}
 
-{% block vich_file_widget %}
-    {% apply spaceless %}
-        <div class="easyadmin-vich-file">
-            {% if download_uri|default('') is not empty %}
-                {% set download_title = download_uri|split('/')|last ?: 'download'|trans({}, 'VichUploaderBundle') %}
-                <a href="{{ asset(download_uri) }}">{{ download_title }}</a>
-            {% endif %}
+{% block vich_file_widget -%}
+    <div class="easyadmin-vich-file">
+        {% if download_uri|default('') is not empty %}
+            {% set download_title = download_uri|split('/')|last ?: 'download'|trans({}, 'VichUploaderBundle') %}
+            <a href="{{ asset(download_uri) }}">{{ download_title }}</a>
+        {% endif %}
 
-            <div class="row">
-                {% if form.delete is defined %}
-                <div class="col-sm-3 col-md-2">
-                    {{ form_row(form.delete, { label: 'form.label.delete' }) }}
-                </div>
-                {% endif %}
-                <div class="{{ form.delete is defined ? 'col-sm-9 col-md-10' : 'col-sm-12' }}">
-                    {{ form_widget(form.file) }}
-                </div>
+        <div class="row">
+            {% if form.delete is defined %}
+            <div class="col-sm-3 col-md-2">
+                {{ form_row(form.delete, { label: 'form.label.delete' }) }}
+            </div>
+            {% endif %}
+            <div class="{{ form.delete is defined ? 'col-sm-9 col-md-10' : 'col-sm-12' }}">
+                {{ form_widget(form.file) }}
             </div>
         </div>
-    {% endapply %}
-{% endblock %}
+    </div>
+{%- endblock %}
 
 {% block vich_image_row %}
     {% set force_error = true %}
     {{ block('form_row') }}
 {% endblock %}
 
-{% block vich_image_widget %}
-    {% apply spaceless %}
-        <div class="easyadmin-vich-image">
-            {{ form_widget(form.file) }}
-            {% if form.delete is defined %}
-                {{ form_row(form.delete, { label: 'form.label.delete' }) }}
+{% block vich_image_widget -%}
+    <div class="easyadmin-vich-image">
+        {{ form_widget(form.file) }}
+        {% if form.delete is defined %}
+            {{ form_row(form.delete, { label: 'form.label.delete' }) }}
+        {% endif %}
+
+        {% if image_uri|default('') is not empty %}
+            {% if download_uri|default('') is empty %}
+                <div class="easyadmin-thumbnail">
+                    <img style="cursor: initial" src="{{ asset(image_uri) }}">
+                </div>
+            {% else %}
+                {% set _lightbox_id = 'easyadmin-lightbox-' ~ id %}
+
+                <a href="#" class="easyadmin-thumbnail" data-featherlight="#{{ _lightbox_id }}" data-featherlight-close-on-click="anywhere">
+                    <img src="{{ asset(download_uri) }}">
+                </a>
+
+                <div id="{{ _lightbox_id }}" class="easyadmin-lightbox">
+                    <img src="{{ asset(download_uri) }}">
+                </div>
             {% endif %}
-
-            {% if image_uri|default('') is not empty %}
-                {% if download_uri|default('') is empty %}
-                    <div class="easyadmin-thumbnail">
-                        <img style="cursor: initial" src="{{ asset(image_uri) }}">
-                    </div>
-                {% else %}
-                    {% set _lightbox_id = 'easyadmin-lightbox-' ~ id %}
-
-                    <a href="#" class="easyadmin-thumbnail" data-featherlight="#{{ _lightbox_id }}" data-featherlight-close-on-click="anywhere">
-                        <img src="{{ asset(download_uri) }}">
-                    </a>
-
-                    <div id="{{ _lightbox_id }}" class="easyadmin-lightbox">
-                        <img src="{{ asset(download_uri) }}">
-                    </div>
-                {% endif %}
-            {% endif %}
-        </div>
-    {% endapply %}
-{% endblock %}
+        {% endif %}
+    </div>
+{%- endblock %}
 
 {% block easyadmin_rest %}
     {{- form_rest(form) -}}
