@@ -42,7 +42,7 @@ class ExceptionListener extends ErrorListener
 
     private $currentEntityName;
 
-    public function __construct(Environment $twig, array $easyAdminConfig, $controller, LoggerInterface $logger = null)
+    public function __construct(Environment $twig, array $easyAdminConfig, $controller, ?LoggerInterface $logger = null)
     {
         $this->twig = $twig;
         $this->easyAdminConfig = $easyAdminConfig;
@@ -50,7 +50,7 @@ class ExceptionListener extends ErrorListener
         parent::__construct($controller, $logger);
     }
 
-    public function onKernelException(ExceptionEvent $event, string $eventName = null, EventDispatcherInterface $eventDispatcher = null)
+    public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
         $this->currentEntityName = $event->getRequest()->query->get('entity');
@@ -66,11 +66,11 @@ class ExceptionListener extends ErrorListener
     {
         $entityConfig = $this->easyAdminConfig['entities'][$this->currentEntityName] ?? null;
         $exceptionTemplatePath = $entityConfig['templates']['exception'] ?? (
-                $this->easyAdminConfig['design']['templates']['exception'] ?? '@EasyAdmin/default/exception.html.twig'
-            );
+            $this->easyAdminConfig['design']['templates']['exception'] ?? '@EasyAdmin/default/exception.html.twig'
+        );
         $exceptionLayoutTemplatePath = $entityConfig['templates']['layout'] ?? (
-                $this->easyAdminConfig['design']['templates']['layout'] ?? '@EasyAdmin/default/layout.html.twig'
-            );
+            $this->easyAdminConfig['design']['templates']['layout'] ?? '@EasyAdmin/default/layout.html.twig'
+        );
 
         return new Response($this->twig->render($exceptionTemplatePath, [
             'exception' => $exception,
@@ -78,7 +78,7 @@ class ExceptionListener extends ErrorListener
         ]), $exception->getStatusCode());
     }
 
-    protected function logException(Throwable $exception, string $message, string $logLevel = null): void
+    protected function logException(Throwable $exception, string $message, ?string $logLevel = null): void
     {
         if (!$exception instanceof BaseException) {
             parent::logException($exception, $message);
